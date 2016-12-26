@@ -20,7 +20,7 @@ void *insert_ex(void *arg){
         int r=rand();
         usleep(r%100);
         data_tree->insert(r%100000,p=new user_data(),true);
-        //maybe you want to do something after insert a new item to tree,then call insert with 3rd parameter.
+        //maybe you want to do something after insert a new item to tree,then call insert with 3rd parameter set true.
         usleep(r%1000);
         p->mutex_unlock();
     }
