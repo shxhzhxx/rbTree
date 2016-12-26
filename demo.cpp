@@ -2,39 +2,39 @@
 #include <stdio.h>
 #include <cstdlib>
 
-/*the satellite data class,which should be customized according to requirement.*/
-class satellite {
+/*the user data class,which should be customized according to requirement. of course, you need extend satellite class */
+class user_data : public satellite {
 public:
-    satellite(int _fd = 0) : fd(_fd) {}
+    user_data(int _fd = 0): fd(_fd) {};
+    ~user_data(){ close(fd); }
 
-    ~satellite() { close(fd); }
-
-    int fd;//file descriptor
+    int fd; //file descriptor
 };
 
 
+
 void *insert_ex(void *arg){
-    rb_tree<satellite> *data_tree=(rb_tree<satellite> *)arg;
-    node<satellite> *new_item=0;
+    rb_tree *data_tree=(rb_tree*)arg;
+    user_data *p=0;
     while (true){
         int r=rand();
         usleep(r%100);
-        data_tree->insert(r%100000,new satellite(),&new_item,true);
-        //maybe you want to do something after insert a new item to tree,then call insert with 3rd and 4th parameter.
+        data_tree->insert(r%100000,p=new user_data(),true);
+        //maybe you want to do something after insert a new item to tree,then call insert with 3rd parameter.
         usleep(r%1000);
-        new_item->mutex_unlock();
+        p->mutex_unlock();
     }
 }
 void *insert(void *arg){
-    rb_tree<satellite> *data_tree=(rb_tree<satellite> *)arg;
+    rb_tree *data_tree=(rb_tree*)arg;
     while (true){
         int r=rand();
         usleep(r%100);
-        data_tree->insert(r%100000,new satellite());
+        data_tree->insert(r%100000,new user_data());
     }
 }
 void *remove(void *arg){
-    rb_tree<satellite> *data_tree=(rb_tree<satellite> *)arg;
+    rb_tree *data_tree=(rb_tree*)arg;
     while (true){
         int r=rand();
         usleep(r%100);
@@ -42,13 +42,13 @@ void *remove(void *arg){
     }
 }
 void *search(void *arg){
-    rb_tree<satellite> *data_tree=(rb_tree<satellite> *)arg;
-    node<satellite> *result=0;
+    rb_tree *data_tree=(rb_tree*)arg;
+    user_data *result=0;
     while (true){
         int r=rand();
-        if(result=data_tree->search(r%100000,true)){
+        if(result=(user_data*)data_tree->search(r%100000,true)){
             if(r%100==0){
-                printf("search:%d\n",data_tree->getCount());
+                printf("search:%d\n",data_tree->size());
             }
             //do something with result here,mutex lock guarantee safety use of result.
             usleep(r%1000);
@@ -59,10 +59,8 @@ void *search(void *arg){
     }
 }
 
-
-
 int main(int argc,char *argv[]){
-    rb_tree<satellite> data_tree;
+    rb_tree data_tree;
     pthread_t tid_insert,tid_insert_ex,tid_remote,tid_search_1,tid_search_2,tid_search_3;
 
     pthread_create(&tid_insert,NULL,insert,(void*)&data_tree);
