@@ -104,12 +104,73 @@ First , let's figure out how these problems occurred.
 * Use map function for performing insert , remove and search
 
   ```c++
+  /**
+   * return the value to which the specified key is mapped
+   * or null if this map contains no mapping for the key.
+   *
+   * param key		the key whose associated value is to be returned
+   * param lock		Whether to lock the return value, if true, this call may be blocked
+   */
   satellite *search(long key, bool lock = true);
+
+  /**
+   * search value for specified key and try locking it .
+   *
+   * return -1 if this map contains no mapping for the key
+   * return 1 if the value is found but can not lock it (cause it is already locked)
+   * return 0 If the value is found and successfully locked it
+   *
+   * param key		key for the value
+   * param result		only if the return value is 0, pointer will be redirect to found value
+   */
   int search_try(long key, satellite **result);
+
+  /**
+   * Associates the specified value with the specified key in this map.
+   * this call may be blocked If the key already exists and the corresponding value is locked.
+   *
+   * param key		key with which the specified value is to be associated
+   * param data		value to be associated with the specified key
+   * param lock		Whether to lock the inserted value
+   */
   int insert(long key, satellite *data, bool lock = true);
+
+  /**
+   * try to associates the specified value with the specified key in this map.
+   * 
+   * return 1 if the key already exist, and the value has been successfully replaced
+   * return -1 if the key already exist, and can not replace the value (locked)
+   * return 0 if the key does not exist before, and key-value pair has been inserted
+   *
+   * param key		key with which the specified value is to be associated
+   * param data		value to be associated with the specified key
+   * param lock		Whether to lock the inserted value
+   */
   int insert_try(long key, satellite *data, bool lock = true);
+
+  /**
+   * Removes the mapping for a key from this map if it is present
+   * this call may be blocked
+   *
+   * return -1 if no value is associates with the key
+   * return 0 if successfully removed a value which is associated with the key
+   *
+   * param key		key whose mapping is to be removed from the map
+   */
   int remove(long key);
-  satellite *get(int index, bool lock = true);
+
+  /**
+   * return the value which is associated with the indexth key (in ascending order)
+   * or null if the map is empty or index outside of range 0...size()-1
+   * 
+   * param index 
+   * param lock		Whether to lock the return value. if true, this call may be blocked
+   */
+  satellite *value_at(int index, bool lock = true);
+
+  /**
+   * Returns the number of key-value mappings in this map
+   */
   int size();
   ```
 

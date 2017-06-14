@@ -72,7 +72,7 @@ public:
     /**
      *从小到大，返回第index个数据
      */
-    satellite *get(int index, bool auto_lock = false);
+    satellite *value_at(int index, bool lock = true);
 
     int size();
 
