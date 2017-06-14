@@ -78,7 +78,7 @@ First , let's figure out how these problems occurred.
 
 
 
-**Also , you need to obey some programming manners to make it works.**
+**Also , you need to obey some programming manners to make it work.**
 
 * Do not call node.mutex_lock() , ever.  map.get() already locked the node it returns , you need not do it yourself . Once you called node.mutex_unlock()  ( which you should call after you have done your work with this node ) , you shouldn't call node.mutex_lock() again .  
 * Do not perform any operations on the node until you get the lock . 
