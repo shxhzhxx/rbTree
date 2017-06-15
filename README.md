@@ -82,7 +82,7 @@ First , let's figure out how these problems occurred.
 
 * Do not call node.mutex_lock() , ever.  map.get() already locked the node it returns , you need not do it yourself . Once you called node.mutex_unlock()  ( which you should call after you have done your work with this node ) , you shouldn't call node.mutex_lock() again .  
 
-  > Actually you can not call mutex_lock() now, thus this function is private and only its friend class (rb_tree)  can call it.
+  > Actually you can not call mutex_lock() in your code, thus this function is private and only its friend class (rb_tree)  can call it.
 
 * Do not perform any operations on the node until you get the lock . 
 
