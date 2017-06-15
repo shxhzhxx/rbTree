@@ -174,5 +174,5 @@ First , let's figure out how these problems occurred.
   int size();
   ```
 
-  ​
+* Read demo.cpp
 
