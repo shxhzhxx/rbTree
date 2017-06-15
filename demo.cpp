@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <cstdlib>
 
-/*the user data class,which should be customized according to requirement. of course, you need extend satellite class */
+/*the user data class,which should be customized according to requirement. of course, you need to extend satellite class */
 class user_data : public satellite {
 public:
     user_data(int _fd = 0): fd(_fd) {};
@@ -19,8 +19,7 @@ void *insert_ex(void *arg){
     while (true){
         int r=rand();
         usleep(r%100);
-        data_tree->insert(r%100000,p=new user_data(),true);
-        //maybe you want to do something after insert a new item to tree,then call insert with 3rd parameter set true.
+        data_tree->insert(r%100000,p=new user_data());
         usleep(r%1000);
         p->mutex_unlock();
     }
@@ -30,7 +29,7 @@ void *insert(void *arg){
     while (true){
         int r=rand();
         usleep(r%100);
-        data_tree->insert(r%100000,new user_data());
+        data_tree->insert(r%100000,new user_data(),false); //insert without locking it
     }
 }
 void *remove(void *arg){
@@ -46,7 +45,7 @@ void *search(void *arg){
     user_data *result=0;
     while (true){
         int r=rand();
-        if(result=(user_data*)data_tree->search(r%100000,true)){
+        if(result=(user_data*)data_tree->search(r%100000)){
             if(r%100==0){
                 printf("search:%d\n",data_tree->size());
             }

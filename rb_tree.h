@@ -54,7 +54,7 @@ public:
     /**
      * 插入一条数据，key重复时返回1，并覆盖原数据，正常时返回0
      */
-    int insert(long key, satellite *data, bool lock = false);
+    int insert(long key, satellite *data, bool lock = true);
 
 
     /**
@@ -62,7 +62,7 @@ public:
      * 正常时返回0，
      * key重复且插入（上锁）失败时返回-1
      */
-    int insert_try(long key, satellite *data, bool lock = false);
+    int insert_try(long key, satellite *data, bool lock = true);
 
     /**
      * 移除一条数据，成功时返回0，未找到指定数据时返回-1
