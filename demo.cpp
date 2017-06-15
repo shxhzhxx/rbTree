@@ -20,15 +20,15 @@ void *insert_ex(void *arg){
         int r=rand();
         usleep(r%100);
         data_tree->insert(r%100000,p=new user_data());
-        usleep(r%1000);
-        p->mutex_unlock();
+        usleep(r%1000);  //insert and lock the new node , here you can safely use it.
+        p->mutex_unlock();  //unlock it
     }
 }
 void *insert(void *arg){
     rb_tree *data_tree=(rb_tree*)arg;
     while (true){
         int r=rand();
-        usleep(r%100);
+        usleep(r%1000);
         data_tree->insert(r%100000,new user_data(),false); //insert without locking it
     }
 }
@@ -36,7 +36,7 @@ void *remove(void *arg){
     rb_tree *data_tree=(rb_tree*)arg;
     while (true){
         int r=rand();
-        usleep(r%100);
+        usleep(r%1000);
         data_tree->remove(r%100000);
     }
 }
@@ -45,12 +45,11 @@ void *search(void *arg){
     user_data *result=0;
     while (true){
         int r=rand();
+        if(r%100==0){
+            printf("size:%d\n",data_tree->size()); //print current size of map
+        }
         if(result=(user_data*)data_tree->search(r%100000)){
-            if(r%100==0){
-                printf("search:%d\n",data_tree->size());
-            }
-            //do something with result here,mutex lock guarantee safety use of result.
-            usleep(r%1000);
+            usleep(r%1000);//do something with result here,mutex lock guarantee safety use of result.
             result->mutex_unlock();
         }else{
         	usleep(r%10);

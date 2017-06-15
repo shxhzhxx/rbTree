@@ -7,12 +7,15 @@ const int RED = 1;
 
 class satellite {
 public:
+    friend class rb_tree;
+    
     satellite();
     virtual ~satellite();
-    int mutex_trylock();
-    void mutex_lock();
     void mutex_unlock();
 private:
+    int mutex_trylock();
+    void mutex_lock();
+
     pthread_mutex_t *mutex;
 };
 
